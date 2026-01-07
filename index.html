@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Um quiz interativo aleatório">
+  <title>Quiz Aleatório</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #f4f4f4;
+      color: #222;
+      line-height: 1.6;
+      padding-bottom: 50px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0077ff, #00c6ff);
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+    }
+
+    main {
+      width: 90%;
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    section {
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      background: #0077ff;
+      color: white;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      background: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Quiz Aleatório</h1>
+  <p>Teste seus conhecimentos gerais!</p>
+</header>
+
+<main>
+
+  <!-- PERGUNTA 1 -->
+  <section>
+    <h2>Pergunta 1</h2>
+    <p>Qual era o nome do primeiro continente da história?</p>
+    <label><input type="radio" name="pergunta1" value="Pangeia"> Pangeia</label><br>
+    <label><input type="radio" name="pergunta1" value="Africa"> África</label>
+  </section>
+
+  <!-- PERGUNTA 2 -->
+  <section>
+    <h2>Pergunta 2</h2>
+    <p>Nome e sobrenome do homem mais rápido do mundo</p>
+    <input type="text" id="p2">
+  </section>
+
+  <!-- PERGUNTA 3 -->
+  <section>
+    <h2>Pergunta 3</h2>
+    <p>Digite uma senha forte</p>
+    <input type="password" id="p3">
+  </section>
+
+  <!-- PERGUNTA 4 -->
+  <section>
+    <h2>Pergunta 4</h2>
+    <p>Data da independência do Brasil</p>
+    <input type="date" id="p4">
+  </section>
+
+  <!-- PERGUNTA 5 -->
+  <section>
+    <h2>Pergunta 5</h2>
+    <p>Países campeões da Copa</p>
+    <label><input type="checkbox" value="Brasil"> Brasil</label><br>
+    <label><input type="checkbox" value="Uruguai"> Uruguai</label><br>
+    <label><input type="checkbox" value="Alemanha"> Alemanha</label>
+  </section>
+
+  <!-- PERGUNTA 6 -->
+  <section>
+    <h2>Pergunta 6</h2>
+    <p>Upload da bandeira do Vaticano</p>
+    <input type="file" id="p6">
+  </section>
+
+  <!-- PERGUNTA 7 -->
+  <section>
+    <h2>Pergunta 7</h2>
+    <select id="p7">
+      <option>Dengue</option>
+      <option>Amayomi</option>
+      <option>Acosta</option>
+    </select>
+  </section>
+
+  <!-- PERGUNTA 8 -->
+  <section>
+    <h2>Pergunta 8</h2>
+    <p>a² + b² = c²</p>
+    <input type="text" id="p8">
+    <br><br>
+    <button type="button" onclick="verResultado()">Finalizar Quiz</button>
+    <p id="resultado"></p>
+  </section>
+
+</main>
+
+<script>
+function verResultado() {
+  let pontos = 0;
+
+  const p1 = document.querySelector('input[name="pergunta1"]:checked');
+  if (p1 && p1.value === "Pangeia") pontos++;
+
+  if (document.getElementById("p2").value.toLowerCase().includes("usain")) pontos++;
+  if (document.getElementById("p3").value.length >= 8) pontos++;
+  if (document.getElementById("p4").value === "1822-09-07") pontos++;
+
+  const checks = [...document.querySelectorAll('input[type="checkbox"]:checked')].map(c => c.value);
+  if (checks.includes("Brasil") && checks.includes("Uruguai") && checks.includes("Alemanha")) pontos++;
+
+  if (document.getElementById("p6").files.length > 0) pontos++;
+  if (document.getElementById("p7").value === "Amayomi") pontos++;
+  if (document.getElementById("p8").value.toLowerCase().includes("pitagoras")) pontos++;
+
+  document.getElementById("resultado").innerHTML = `Você fez ${pontos}/8 pontos`;
+}
+</script>
+
+</body>
+</html>
