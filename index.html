@@ -3,9 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Um quiz interativo sobre temas aleatórios">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Um quiz interativo aleatório">
   <title>Quiz Aleatório</title>
 
   <style>
@@ -31,6 +30,11 @@
       margin-bottom: 30px;
     }
 
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
     main {
       width: 90%;
       max-width: 900px;
@@ -54,127 +58,333 @@
       font-size: 1.3rem;
     }
 
-    input, select, textarea {
+    form input,
+    form select,
+    textarea {
       width: 100%;
       padding: 10px;
       margin-top: 8px;
       border-radius: 6px;
       border: 1px solid #ccc;
+      outline: none;
+      transition: 0.2s;
     }
 
-    button {
-      padding: 12px 20px;
-      font-size: 16px;
+    form input:focus,
+    form select:focus,
+    textarea:focus {
+      border-color: #0077ff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ccc;
+    }
+
+    th {
       background: #0077ff;
       color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
     }
 
-    button:hover {
-      opacity: 0.9;
+    details summary {
+      cursor: pointer;
+      background: #0077ff;
+      color: white;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    fieldset {
+      border: 2px solid #0077ff;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    legend {
+      padding: 5px 10px;
+      background: #0077ff;
+      color: white;
+      border-radius: 6px;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      background: #eaeaea;
+      text-align: center;
+      border-top: 3px solid #0077ff;
+    }
+
+    footer a {
+      color: #0077ff;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 
 <body>
+  <script>
+    function verResultado() {
+      let pontos = 0;
+      // Pergunta 1
+      const p1 = document.querySelector('input[name="pergunta1"]:checked');
+      if (p1 && p1.value === "Pangeia") pontos++;
+      // Pergunta 2
+      const p2 = document.querySelectorAll('input[type="text"]')[0].value.toLowerCase();
+      if (p2.includes("usain") && p2.includes("bolt")) pontos++;
+      // Pergunta 3 (senha forte: mínimo 8 caracteres)
+      const p3 = document.querySelector('input[type="password"]').value;
+      if (p3.length >= 8) pontos++;
+      // Pergunta 4
+      const p4 = document.querySelector('input[type="date"]').value;
+      if (p4 === "1822-09-07") pontos++;
+      // Pergunta 5
+      const checks = document.querySelectorAll('input[type="checkbox"]:checked');
+      let corretos = ["Brasil", "Uruguai", "Alemanha"];
+      let marcados = Array.from(checks).map(c => c.value);
+      if (
+        corretos.every(p => marcados.includes(p)) &&
+        marcados.every(p => corretos.includes(p))
+      ) {
+        pontos++;
+      }
+      // Pergunta 6 (upload)
+      const file = document.querySelector('input[type="file"]').files.length;
+      if (file > 0) pontos++;
+      // Pergunta 7
+      const p7 = document.querySelector('select').value;
+      if (p7 === "Amayomi") pontos++;
+      // Pergunta 8
+      const p8 = document.querySelectorAll('input[type="text"]')[1].value.toLowerCase();
+      if (p8.includes("pitágoras") || p8.includes("pitagoras")) pontos++;
+      // Avaliação
+      let avaliacao = "";
+      if (pontos <= 2) avaliacao = "Não desista! Estude mais!";
+      else if (pontos <= 4) avaliacao = "Dá para melhorar!";
+      else if (pontos <= 6) avaliacao = "Tá na média!";
+      else avaliacao = "Ótimo!";
+      document.getElementById("resultado").innerHTML =
+        `Você fez <strong>${pontos}/8</strong> pontos.<br>Avaliação: <strong>${avaliacao}</strong>`;
+    }
+  </script>
 
-<header>
-  <h1>Quiz Aleatório</h1>
-  <p>Teste seus conhecimentos gerais!</p>
-</header>
+  <header>
+    <h1>Quiz Aleatório</h1>
+    <p>Esse quiz com temas aleatórios vai testar o seu conhecimento!</p>
+  </header>
 
-<main>
+  <main>
+    <section>
+      <h2>Sobre esse quiz</h2>
+      <p><strong>Esse quiz</strong> foi desenvolvido para testar sua compreensão sobre <em><abbr title="Portugues,Geografia,História e etc">conhecimentos gerais</abbr></em>.</p>
+      <p>Ele funciona com sistema de pontuação e a cada pergunta vai ficando mais difícil.</p>
+      <p>No final do quiz você terá sua <i>pontuação</i> e sua <b>avaliação</b>. Você está preparado?</p>
+    </section>
 
-  <!-- PERGUNTA 1 -->
-  <section>
-    <h2>Pergunta 1</h2>
-    <p>Qual era o nome do primeiro continente da história?</p>
-    <label><input type="radio" name="pergunta1" value="Pangeia"> Pangeia</label><br>
-    <label><input type="radio" name="pergunta1" value="Africa"> África</label>
-  </section>
+    <section>
+      <h2>Pergunta 1<br>Qual era o nome do primeiro continente da história?</h2>
+      <form>
+        <label><input type="radio" value="Africa" name="pergunta1"> África</label><br>
+        <label><input type="radio" value="Asia" name="pergunta1"> Ásia</label><br>
+        <label><input type="radio" value="Pangeia" name="pergunta1"> Pangeia</label><br>
+        <label><input type="radio" value="Mauricio" name="pergunta1"> Mauricio</label>
+      </form>
+    </section>
 
-  <!-- PERGUNTA 2 -->
-  <section>
-    <h2>Pergunta 2</h2>
-    <p>Nome e sobrenome do homem mais rápido do mundo</p>
-    <input type="text" id="p2">
-  </section>
+    <section>
+      <h2>Pergunta 2<br>Nome e sobrenome do homem mais rápido do mundo</h2>
+      <form>
+        <input type="text" placeholder="Digite sua resposta">
+      </form>
+    </section>
 
-  <!-- PERGUNTA 3 -->
-  <section>
-    <h2>Pergunta 3</h2>
-    <p>Digite uma senha forte</p>
-    <input type="password" id="p3">
-  </section>
+    <section>
+      <h2>Pergunta 3<br>Digite uma senha forte</h2>
+      <form>
+        <input type="password" placeholder="Digite sua senha">
+      </form>
+    </section>
 
-  <!-- PERGUNTA 4 -->
-  <section>
-    <h2>Pergunta 4</h2>
-    <p>Data da independência do Brasil</p>
-    <input type="date" id="p4">
-  </section>
+    <section>
+      <h2>Pergunta 4<br>Insira a data da independência do Brasil</h2>
+      <form>
+        <input type="date">
+      </form>
+    </section>
 
-  <!-- PERGUNTA 5 -->
-  <section>
-    <h2>Pergunta 5</h2>
-    <p>Países campeões da Copa</p>
-    <label><input type="checkbox" value="Brasil"> Brasil</label><br>
-    <label><input type="checkbox" value="Uruguai"> Uruguai</label><br>
-    <label><input type="checkbox" value="Alemanha"> Alemanha</label>
-  </section>
+    <section>
+      <h2>Pergunta 5<br>Marque apenas os países que já foram campeões da Copa do Mundo</h2>
+      <form>
+        <label><input type="checkbox" value="Japão"> Japão</label><br>
+        <label><input type="checkbox" value="Letonia"> Letônia</label><br>
+        <label><input type="checkbox" value="Brasil"> Brasil</label><br>
+        <label><input type="checkbox" value="Uruguai"> Uruguai</label><br>
+        <label><input type="checkbox" value="Alemanha"> Alemanha</label><br>
+        <label><input type="checkbox" value="EUA"> EUA</label>
+      </form>
+    </section>
 
-  <!-- PERGUNTA 6 -->
-  <section>
-    <h2>Pergunta 6</h2>
-    <p>Upload da bandeira do Vaticano</p>
-    <input type="file" id="p6">
-  </section>
+    <section>
+      <h2>Pergunta 6<br>Faça upload da bandeira do Vaticano</h2>
+      <form>
+        <input type="file">
+      </form>
+    </section>
 
-  <!-- PERGUNTA 7 -->
-  <section>
-    <h2>Pergunta 7</h2>
-    <select id="p7">
-      <option>Dengue</option>
-      <option>Amayomi</option>
-      <option>Acosta</option>
-    </select>
-  </section>
+    <section>
+      <h2>Pergunta 7<br>Qual é o sobrenome mais incomum no Brasil?</h2>
+      <form>
+        <select>
+          <option>Dengue</option>
+          <option>Amayomi</option>
+          <option>Acosta</option>
+          <option>Avelino</option>
+          <option>Barreira</option>
+        </select>
+      </form>
+    </section>
 
-  <!-- PERGUNTA 8 -->
-  <section>
-    <h2>Pergunta 8</h2>
-    <p>a² + b² = c²</p>
-    <input type="text" id="p8">
-    <br><br>
-    <button type="button" onclick="verResultado()">Finalizar Quiz</button>
-    <p id="resultado"></p>
-  </section>
+    <section>
+      <h2>Pergunta 8<br>Qual o nome da fórmula matemática?</h2>
+      <p>a² + b² = c²</p>
+      <input type="text" placeholder="Teorema de...">
 
-</main>
+      <button onclick="verResultado()" style="padding:12px 20px; font-size:16px; background:#0077ff; color:white; border:none; border-radius:8px; cursor:pointer;">
+        Finalizar Quiz
+      </button>
+      <p id="resultado" style="margin-top:15px; font-weight:bold;"></p>
 
-<script>
-function verResultado() {
-  let pontos = 0;
+    </section>
 
-  const p1 = document.querySelector('input[name="pergunta1"]:checked');
-  if (p1 && p1.value === "Pangeia") pontos++;
+    <section>
+      <h2>Tabela de Pontuação</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Pontuação</th>
+            <th>Avaliação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0–2</td>
+            <td>Não desista! Estude mais!</td>
+          </tr>
+          <tr>
+            <td>3–4</td>
+            <td>Dá para melhorar!</td>
+          </tr>
+          <tr>
+            <td>5–6</td>
+            <td>Tá na média!</td>
+          </tr>
+          <tr>
+            <td>7–8</td>
+            <td>Ótimo!</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">Mais sorte na próxima!</td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
 
-  if (document.getElementById("p2").value.toLowerCase().includes("usain")) pontos++;
-  if (document.getElementById("p3").value.length >= 8) pontos++;
-  if (document.getElementById("p4").value === "1822-09-07") pontos++;
+    <section>
+      <h2>Verifique suas respostas</h2>
+      <details>
+        <summary>Clique aqui para ver</summary>
+        <ol>
+          <li>Pangeia</li>
+          <li>Usain Bolt</li>
+          <li>ab3E{##+720</li>
+          <li>07/09/1822</li>
+          <li>Brasil, Uruguai e Alemanha</li>
+          <li>Upload da bandeira do Vaticano</li>
+          <li>Amayomi</li>
+          <li>Teorema de Pitágoras</li>
+        </ol>
+      </details>
+    </section>
 
-  const checks = [...document.querySelectorAll('input[type="checkbox"]:checked')].map(c => c.value);
-  if (checks.includes("Brasil") && checks.includes("Uruguai") && checks.includes("Alemanha")) pontos++;
+    <section>
+  <h2>Nos dê seu feedback!</h2>
 
-  if (document.getElementById("p6").files.length > 0) pontos++;
-  if (document.getElementById("p7").value === "Amayomi") pontos++;
-  if (document.getElementById("p8").value.toLowerCase().includes("pitagoras")) pontos++;
+  <form action="https://formspree.io/f/mpqwvajy" method="POST">
+    <fieldset>
+      <legend>Informações de contato</legend>
 
-  document.getElementById("resultado").innerHTML = `Você fez ${pontos}/8 pontos`;
-}
-</script>
+      <label for="nome">Nome:</label>
+      <input 
+        type="text" 
+        id="nome" 
+        name="nome" 
+        placeholder="Digite seu nome..." 
+        required
+      >
+      <br><br>
 
+      <label for="email">Email:</label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        placeholder="Digite seu email..." 
+        required
+      >
+      <br><br>
+
+      <label for="mensagem">Comentários:</label><br>
+      <textarea 
+        id="mensagem" 
+        name="mensagem" 
+        rows="4" 
+        placeholder="Digite seus comentários..." 
+        required
+      ></textarea>
+
+      <br><br>
+
+      <!-- campo oculto opcional -->
+      <input type="hidden" name="_subject" value="Novo feedback do Quiz">
+
+      <button 
+        type="submit"
+        style="
+          padding: 12px 20px;
+          font-size: 16px;
+          background: #0077ff;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+        "
+      >
+        Enviar Feedback
+      </button>
+    </fieldset>
+  </form>
+</section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Quiz Aleatório — Todos os direitos reservados.</p>
+    <p>Conheça outros quizzes: <a href="https://google.com" target="_blank" rel="noopener noreferrer">clique aqui</a></p>
+  </footer>
 </body>
 </html>
